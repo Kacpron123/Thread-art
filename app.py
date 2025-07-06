@@ -74,9 +74,9 @@ class CircleThreadArtApp:
         self.original_stdout = sys.stdout
 
         # Bind mouse events for dragging points
-        self.canvas.bind("<Button-1>", self.on_button_press)
-        self.canvas.bind("<B1-Motion>", self.on_mouse_drag)
-        self.canvas.bind("<ButtonRelease-1>", self.on_button_release)
+        self.canvas.bind("<Button-1>", self.image_app.circle.on_button_press)
+        self.canvas.bind("<B1-Motion>", self.image_app.circle.on_mouse_drag)
+        self.canvas.bind("<ButtonRelease-1>", self.image_app.circle.on_button_release)
         self.canvas.bind("<Configure>", self.on_canvas_resize)
 
         # temp=circle.Circle(self.canvas)

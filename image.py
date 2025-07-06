@@ -72,6 +72,8 @@ class AppImage:
         
     def set_circle_num_pins(self, num_pins):
         self.circle.set_num_pins(num_pins)
+        if self._image:
+            self.circle.draw_circle()
 
     def resize_image(self, new_width, new_height):
         if self._image:
