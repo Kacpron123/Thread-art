@@ -95,7 +95,8 @@ class CircleThreadArtApp:
         
         if prepared_image.mode != "L":
             prepared_image = prepared_image.convert("L")
-
+        default_sqaure_size=1000
+        prepared_image = prepared_image.resize((default_sqaure_size,default_sqaure_size))
         prepared_image.save("thread_art.jpg")
         logger.info("Thread art saved to thread_art.jpg")
         self.console_text.write("Thread art saved to thread_art.png\n")
