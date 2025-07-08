@@ -67,20 +67,12 @@ class CircleThreadArtApp:
         self.pins_slider.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Button for calculating thread art
-        self.calculate_thread_art_button = tk.Button(self.control_frame, text="Calculate Thread Art", )
+        self.calculate_thread_art_button = tk.Button(self.control_frame, text="Calculate Thread Art", command=self.calculate_thread_art)
         self.calculate_thread_art_button.pack(side=tk.RIGHT, padx=5, pady=5)
 
         # Store original stdout for restoration, but do NOT redirect here anymore
         self.original_stdout = sys.stdout
 
-        # Bind mouse events for dragging points
-        self.canvas.bind("<Button-1>", self.image_app.circle.on_button_press)
-        self.canvas.bind("<B1-Motion>", self.image_app.circle.on_mouse_drag)
-        self.canvas.bind("<ButtonRelease-1>", self.image_app.circle.on_button_release)
-        self.canvas.bind("<Configure>", self.on_canvas_resize)
-
-        # temp=circle.Circle(self.canvas)
-        # temp.draw_circle()
         # Print welcome message to console
         logger.info("app started")
         write_to_console("Welcome to Circle Thread Art Maker!\n")
@@ -89,14 +81,22 @@ class CircleThreadArtApp:
         """
         Callback function for the pins slider. Updates self.num_pins and logs to console.
         """
-        x=self.num_pins = int(value)
-        self.image_app.set_circle_num_pins(x)
+        self.num_pins = int(value)
+        self.image_app.set_circle_num_pins(self.num_pins)
         logger.debug(f"Number of Pins updated to: {self.num_pins}")
 
-    def on_canvas_resize(self, event):
-        """Handles canvas resizing to redraw the image and elements."""
-        canvas_width = self.canvas.winfo_width()
-        canvas_height = self.canvas.winfo_height()
 
-        self.image_app.resize_image(canvas_width, canvas_height)
-        logger.debug(f"Canvas resized to {canvas_width}x{canvas_height}")
+    def calculate_thread_art(self):
+        """calculating thread art"""
+        prepared_image = self.image_app.prepare_image_for_calculation()
+        if not prepared_image:
+            self.console_text.write("No image to calculate. Please load an image first.\n")
+            logger.warning("Calculation skipped: No image prepared.")
+            return
+        
+        if prepared_image.mode != "L":
+            prepared_image = prepared_image.convert("L")
+
+        prepared_image.save("thread_art.jpg")
+        logger.info("Thread art saved to thread_art.jpg")
+        self.console_text.write("Thread art saved to thread_art.png\n")
