@@ -1,4 +1,3 @@
-# app.py
 import tkinter as tk
 from tkinter import Scale, HORIZONTAL
 import sys
