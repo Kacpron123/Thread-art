@@ -17,7 +17,11 @@ Circle Thread Art Maker is a graphical application that allows users to create t
 2. Click on "Load Image" to open a file dialog and select an image.
 3. Observe the circle drawn based on the selected points.
 
-## Dependencies
 
-- Python 3.x
-- Tkinter (usually included with Python)
+## Example
+
+### Original Image
+![World Map](example.png)
+
+### Resulting Thread Art
+![World Map Thread Art](example_result.png)
