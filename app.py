@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import Scale, HORIZONTAL
 import sys
 import logging
+from matplotlib import pyplot as plt
 import image
+import thread_calculator
 
 # Get a logger for this module
 logger = logging.getLogger(__name__)
@@ -17,7 +19,7 @@ class CircleThreadArtApp:
 
         
         # Initialize instance variables
-        self.num_pins = 30 # Default value for the number of pins
+        self.num_pins = 150 # Default value for the number of pins
 
         # Main frame to hold controls, canvas, and console panel
         self.main_frame = tk.Frame(self.root)
@@ -61,7 +63,7 @@ class CircleThreadArtApp:
         self.pins_label = tk.Label(self.control_frame, text="Number of Pins:")
         self.pins_label.pack(side=tk.LEFT, padx=(15, 2), pady=5)
 
-        self.pins_slider = Scale(self.control_frame, from_=10, to=120, orient=HORIZONTAL,length=200, resolution=1, command=self.update_num_pins)
+        self.pins_slider = Scale(self.control_frame, from_=100, to=400, orient=HORIZONTAL,length=200, resolution=10, command=self.update_num_pins)
         self.pins_slider.set(self.num_pins) # Set initial value
         self.pins_slider.pack(side=tk.LEFT, padx=5, pady=5)
 
@@ -95,8 +97,13 @@ class CircleThreadArtApp:
         
         if prepared_image.mode != "L":
             prepared_image = prepared_image.convert("L")
+        self.console_text.write("preparing result...\n")
         default_sqaure_size=1000
         prepared_image = prepared_image.resize((default_sqaure_size,default_sqaure_size))
-        prepared_image.save("thread_art.jpg")
+        tc=thread_calculator.thread_calculator(prepared_image,self.image_app.circle.start_angle,self.num_pins)
+        calculated_image=tc.calculate_thread(limit=2000)
+        plt.imshow(calculated_image,cmap='gray')
+        plt.show()
+        calculated_image.save("thread_art.jpg")
         logger.info("Thread art saved to thread_art.jpg")
         self.console_text.write("Thread art saved to thread_art.png\n")

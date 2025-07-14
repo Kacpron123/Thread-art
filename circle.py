@@ -23,6 +23,7 @@ class Circle:
         self.active_point_index = -1  # 0 for point1, 1 for point2
         self.start_mouse_x = 0
         self.start_mouse_y = 0
+        self.start_angle = 0
         # points where the drag started
         self.initial_point_x = 0
         self.initial_point_y = 0
@@ -105,8 +106,10 @@ class Circle:
         scale_x = img_display_width / original_img_width
         scale_y = img_display_height / original_img_height
 
-        if scale_x == 0 : scale_x = 1e-9
-        if scale_y == 0 : scale_y = 1e-9
+        if scale_x == 0 :
+             scale_x = 1e-9
+        if scale_y == 0 :
+             scale_y = 1e-9
 
         ox = (cx - x_offset) / scale_x
         oy = (cy - y_offset) / scale_y
@@ -163,17 +166,16 @@ class Circle:
         
         if radius_canvas > 0 and self.num_pins is not None:
             if x2_canvas == center_x_canvas and y2_canvas == center_y_canvas:
-                start_angle = 0 # Default if radius point is at center (circle collapsed)
+                self.start_angle = 0 # Default if radius point is at center (circle collapsed)
             else:
-                start_angle = math.atan2(y1_canvas - center_y_canvas, x1_canvas - center_x_canvas)
-            tolerance = 3
+                self.start_angle = math.atan2(y1_canvas - center_y_canvas, x1_canvas - center_x_canvas)
+            # tolerance = 3
             for i in range(1,self.num_pins):
-                angle = start_angle + 2 * math.pi * i / self.num_pins
+                angle = self.start_angle + 2 * math.pi * i / self.num_pins
                 pin_x = center_x_canvas + radius_canvas * math.cos(angle)
                 pin_y = center_y_canvas + radius_canvas * math.sin(angle)
                 # if wanted ignore drawing pin on moveable point
-                # if (pin_x-x2_canvas)**2 + (pin_y-y2_canvas)**2 < tolerance**2:
-                #     continue
+                
                 self.pin_coords.append((pin_x, pin_y))
                 # Draw pin as a small purple circle
                 pin_dot_size = 2

@@ -5,7 +5,7 @@ Thread profiles
 defined as functions that take a normalized x value (-1.0 to 1.0) and return a density value (0.0 to 1.0).
 """
 
-_MAX_DENSITY = 0.5
+_MAX_DENSITY = 0.2
 def rectangular_profile(x: float) -> float:
     """
     Rectangular profile: Uniform density across the entire width (max. 50%).
